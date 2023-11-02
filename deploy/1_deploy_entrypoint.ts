@@ -1,17 +1,28 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
-import { Create2Factory } from '../src/Create2Factory'
-import { ethers } from 'hardhat'
+import { SKALECreate2Factory } from '../src/SKALECreate2Factory'
+// import { ethers } from 'hardhat'
 
 const deployEntryPoint: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const provider = ethers.provider
+
+  const provider = hre.ethers.provider
   const from = await provider.getSigner().getAddress()
-  await new Create2Factory(ethers.provider).deployFactory()
+  /** Commented Out due to Unknown Cryptic Error - Also not required */
+  // await new SKALECreate2Factory(provider).deployFactory()
+
+  const senderCreatorImpl = await hre.deployments.deploy(
+    'SenderCreator', {
+      from,
+      args: [],
+      gasLimit: 6e6,
+      deterministicDeployment: true
+    })
+  console.log('==senderCreator addr=', senderCreatorImpl.address)
 
   const ret = await hre.deployments.deploy(
     'EntryPoint', {
       from,
-      args: [],
+      args: [senderCreatorImpl.address],
       gasLimit: 6e6,
       deterministicDeployment: true
     })

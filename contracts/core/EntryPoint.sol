@@ -23,7 +23,11 @@ contract EntryPoint is IEntryPoint, StakeManager, NonceManager, ReentrancyGuard 
 
     using UserOperationLib for UserOperation;
 
-    SenderCreator private immutable senderCreator = new SenderCreator();
+    /**
+     * @dev This modification was done to ensure compatability with SKALE.
+     * @dev SKALE does not allow deployment of contracts from constructor or during initialization
+     */
+    SenderCreator private immutable senderCreator;
 
     // internal value used during simulation: need to query aggregator.
     address private constant SIMULATE_FIND_AGGREGATOR = address(1);
@@ -38,6 +42,15 @@ contract EntryPoint is IEntryPoint, StakeManager, NonceManager, ReentrancyGuard 
      * in case of signature failure, instead of revert.
      */
     uint256 public constant SIG_VALIDATION_FAILED = 1;
+
+    /**
+     * @param senderCreatorAddress is the address of SenderCreator implemenetation
+     * @dev This modification was done to ensure compatability with SKALE.
+     * @dev SKALE does not allow deployment of contracts from constructor or during initialization
+     */
+    constructor(address senderCreatorAddress) {
+        senderCreator = SenderCreator(senderCreatorAddress);
+    }
 
     /**
      * compensate the caller's beneficiary address with the collected fees of all UserOperations.

@@ -1,0 +1,74 @@
+{
+  "address": "0xcb483Edd73BcaD1d5a3537071BCa5D8C6e9347e8",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "initCode",
+          "type": "bytes"
+        }
+      ],
+      "name": "createSender",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x0398b2a9b720a5d2f365da20de1c3156c24ba8ce46206a975b727035eb0599d5",
+  "receipt": {
+    "to": "0x647a4A371397DFcA08829ef628641D7330Bb0f07",
+    "from": "0x656a5A16DF0A0B5d87f662206ada74D006483542",
+    "contractAddress": null,
+    "transactionIndex": 0,
+    "gasUsed": "174567",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xd07d246655e41d665429ac39d25145852913d3f8246a3a28e936117b1625e33f",
+    "transactionHash": "0x0398b2a9b720a5d2f365da20de1c3156c24ba8ce46206a975b727035eb0599d5",
+    "logs": [],
+    "blockNumber": 3208768,
+    "cumulativeGasUsed": "174567",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 2,
+  "solcInputHash": "a06c998e91c67ad6b77964a48d38d4b6",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"initCode\",\"type\":\"bytes\"}],\"name\":\"createSender\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"createSender(bytes)\":{\"params\":{\"initCode\":\"the initCode value from a UserOp. contains 20 bytes of factory address, followed by calldata\"},\"returns\":{\"sender\":\"the returned address of the created account, or zero address on failure.\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"createSender(bytes)\":{\"notice\":\"call the \\\"initCode\\\" factory to create and return the sender account address\"}},\"notice\":\"helper contract for EntryPoint, to call userOp.initCode from a \\\"neutral\\\" address, which is explicitly not the entryPoint itself.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/core/SenderCreator.sol\":\"SenderCreator\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":1000000},\"remappings\":[]},\"sources\":{\"contracts/core/SenderCreator.sol\":{\"content\":\"// SPDX-License-Identifier: GPL-3.0\\npragma solidity ^0.8.12;\\n\\n/**\\n * helper contract for EntryPoint, to call userOp.initCode from a \\\"neutral\\\" address,\\n * which is explicitly not the entryPoint itself.\\n */\\ncontract SenderCreator {\\n\\n    /**\\n     * call the \\\"initCode\\\" factory to create and return the sender account address\\n     * @param initCode the initCode value from a UserOp. contains 20 bytes of factory address, followed by calldata\\n     * @return sender the returned address of the created account, or zero address on failure.\\n     */\\n    function createSender(bytes calldata initCode) external returns (address sender) {\\n        address factory = address(bytes20(initCode[0 : 20]));\\n        bytes memory initCallData = initCode[20 :];\\n        bool success;\\n        /* solhint-disable no-inline-assembly */\\n        assembly {\\n            success := call(gas(), factory, 0, add(initCallData, 0x20), mload(initCallData), 0, 32)\\n            sender := mload(0)\\n        }\\n        if (!success) {\\n            sender = address(0);\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0x44b9449fec82d6cdfb01d52fdd5a72f90099c651316123810cf9633f00b018c2\",\"license\":\"GPL-3.0\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610213806100206000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063570e1a3614610030575b600080fd5b61004361003e3660046100f9565b61006c565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60008061007c601482858761016b565b61008591610195565b60601c90506000610099846014818861016b565b8080601f016020809104026020016040519081016040528093929190818152602001838380828437600092018290525084519495509360209350849250905082850182875af190506000519350806100f057600093505b50505092915050565b6000806020838503121561010c57600080fd5b823567ffffffffffffffff8082111561012457600080fd5b818501915085601f83011261013857600080fd5b81358181111561014757600080fd5b86602082850101111561015957600080fd5b60209290920196919550909350505050565b6000808585111561017b57600080fd5b8386111561018857600080fd5b5050820193919092039150565b7fffffffffffffffffffffffffffffffffffffffff00000000000000000000000081358181169160148510156101d55780818660140360031b1b83161692505b50509291505056fea2646970667358221220d5d7cb55b3123d86b2710028be2074a469cca162ad2a26c50fb1cfdce4424b9464736f6c634300080f0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061002b5760003560e01c8063570e1a3614610030575b600080fd5b61004361003e3660046100f9565b61006c565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60008061007c601482858761016b565b61008591610195565b60601c90506000610099846014818861016b565b8080601f016020809104026020016040519081016040528093929190818152602001838380828437600092018290525084519495509360209350849250905082850182875af190506000519350806100f057600093505b50505092915050565b6000806020838503121561010c57600080fd5b823567ffffffffffffffff8082111561012457600080fd5b818501915085601f83011261013857600080fd5b81358181111561014757600080fd5b86602082850101111561015957600080fd5b60209290920196919550909350505050565b6000808585111561017b57600080fd5b8386111561018857600080fd5b5050820193919092039150565b7fffffffffffffffffffffffffffffffffffffffff00000000000000000000000081358181169160148510156101d55780818660140360031b1b83161692505b50509291505056fea2646970667358221220d5d7cb55b3123d86b2710028be2074a469cca162ad2a26c50fb1cfdce4424b9464736f6c634300080f0033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "createSender(bytes)": {
+        "params": {
+          "initCode": "the initCode value from a UserOp. contains 20 bytes of factory address, followed by calldata"
+        },
+        "returns": {
+          "sender": "the returned address of the created account, or zero address on failure."
+        }
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "createSender(bytes)": {
+        "notice": "call the \"initCode\" factory to create and return the sender account address"
+      }
+    },
+    "notice": "helper contract for EntryPoint, to call userOp.initCode from a \"neutral\" address, which is explicitly not the entryPoint itself.",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}
